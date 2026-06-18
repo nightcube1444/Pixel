@@ -1,8 +1,38 @@
 MINI CUBE ALERT ENGINE
 
-INFO
-----
-[MARKET_STATE] MarketState
-Type: BASELINE_MONITOR
-Score: 45
-Why: Market state changed: TENSE_BULL -> TENSE_BULL
+IMPORTANT
+---------
+[MARKET_STATE] FearScore
+Type: FEAR_CHANGE
+Score: 78
+Why: Market state changed: 15.00 -> 16.00
+
+[ALPHA] MOMENTUM|BEAR|VOLATILE|BEAR|VIX_EXTREME
+Type: SCORE_JUMP
+Score: 72
+Stocks: AAPL, AMZN, BAC, BHARTIARTL, BTC-USD
+Why: Pattern score jumped meaningfully.
+
+[ALPHA] MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME
+Type: SCORE_JUMP
+Score: 72
+Stocks: AAPL, AMZN, BAC, BEL, BHARTIARTL
+Why: Pattern score jumped meaningfully.
+
+[ALPHA] MOMENTUM|HIGH_VOLATILITY|NORMAL|BULL|VIX_LOW
+Type: SCORE_JUMP
+Score: 72
+Stocks: AAPL, AMD, AMZN, BEL, BHARTIARTL
+Why: Pattern score jumped meaningfully.
+
+[ALPHA] MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW
+Type: SCORE_JUMP
+Score: 72
+Stocks: AAPL, AMD, AMZN, BEL, BHARTIARTL
+Why: Pattern score jumped meaningfully.
+
+[ALPHA] MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|BULL|VIX_LOW
+Type: SCORE_JUMP
+Score: 72
+Stocks: BSE, BTC-USD, CDSL, COCHINSHIP, ETH-USD
+Why: Pattern score jumped meaningfully.

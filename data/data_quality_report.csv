@@ -1,7 +1,7 @@
 File,Exists,Rows,Columns,SizeMB,DuplicateRows,MissingColumns,NaNCells,Status,Issue
 market_data.csv,True,208043,8,21.81,0,,0,OK,No major issue
-latest_stock_signals.csv,True,56,23,0.01,0,,242,WARNING,NaN values found
-all_stock_signals.csv,True,208043,23,50.5,0,,921547,WARNING,NaN values found
+latest_stock_signals.csv,True,56,23,0.01,0,,244,WARNING,NaN values found
+all_stock_signals.csv,True,208043,23,50.5,0,,921549,WARNING,NaN values found
 sector_strength.csv,True,8,6,0.0,0,,0,OK,No major issue
 signal_discovery_results.csv,True,353,11,0.03,0,,0,OK,No major issue
 confidence_score_results.csv,True,353,13,0.04,0,,0,OK,No major issue

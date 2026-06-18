@@ -66,6 +66,30 @@ SECTOR_MAP = {
     "USO": "COMMODITY",
 
     "DBC": "COMMODITY",
+    "BEL": "DEFENSE",
+    "BHARTIARTL": "COMMUNICATION",
+    "BSE": "FINANCIAL",
+    "CDSL": "FINANCIAL",
+    "COCHINSHIP": "DEFENSE",
+    "HAL": "DEFENSE",
+    "IDEA": "COMMUNICATION",
+    "IREDA": "FINANCIAL",
+    "IRFC": "FINANCIAL",
+    "KPITTECH": "TECH",
+    "LT": "INDUSTRIAL",
+    "NMDC": "METALS",
+    "NOC": "DEFENSE",
+    "PERSISTENT": "TECH",
+    "RKLB": "SPACE",
+    "RVNL": "INDUSTRIAL",
+    "SAIL": "METALS",
+    "SUZLON": "ENERGY",
+    "YESBANK": "FINANCIAL",
+    "^VIX": "VOLATILITY",
+    "GLD": "COMMODITY",
+    "IRDM": "SPACE",
+
+    
 }
 
 

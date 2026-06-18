@@ -1,9 +1,36 @@
 MINI CUBE CHANGE EXPLANATION SUMMARY
-Time: 2026-06-18 09:54:43
+Time: 2026-06-18 10:37:23
 
-Total explained changes: 1
+Total explained changes: 22
 
-INFO:
-- MARKET_STATE | MarketState | BASELINE_MONITOR
-  Reason: Overall market state changed from TENSE_BULL to TENSE_BULL.
-  Action: Check if top alpha patterns still perform well under the new market state.
+IMPORTANT:
+- ALPHA | MOMENTUM|BULL|VOLATILE|BULL|VIX_HIGH | NEW_PATTERN
+  Reason: A new pattern entered the top alpha ranking list.
+  Action: Do not trust immediately. Check trades, win rate, average return, and sample size.
+- ALPHA | PANIC|BULL|VOLATILE|SIDEWAYS|VIX_EXTREME | DROPPED_PATTERN
+  Reason: A previously top-ranked pattern dropped out of the top alpha list.
+  Action: Check whether the pattern is decaying or only temporarily weaker.
+- ALPHA | MOMENTUM|BEAR|VOLATILE|BEAR|VIX_EXTREME | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | MOMENTUM|HIGH_VOLATILITY|NORMAL|BULL|VIX_LOW | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|BULL|VIX_LOW | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | OVERBOUGHT|HIGH_VOLATILITY|NORMAL|BULL|VIX_HIGH | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | OVERBOUGHT|SIDEWAYS|NORMAL|SPY_INSUFFICIENT_HISTORY|VIX_UNAVAILABLE | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
