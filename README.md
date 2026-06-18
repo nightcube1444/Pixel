@@ -1,80 +1,33 @@
-Mini Cube Market Intelligence System
+# Pixel
 
-An autonomous market intelligence and research platform designed to discover, validate, rank, monitor, and learn from market patterns.
+Pixel is an AI-powered market intelligence and research platform that studies stocks, ETFs, crypto, market regimes, news signals, and historical patterns.
 
-Features
+## Features
 
-Data Collection
+- Market data collection
+- Signal discovery
+- Market state detection
+- Pattern stability tracking
+- Confidence scoring
+- Alpha ranking
+- Live pattern matching
+- Change detection
+- Research reports
+- Data quality auditing
 
-* Download market data
-* Fetch financial news
-* Build stock universes
-* Build S&P 500 universes
+## Asset Coverage
 
-Signal Discovery
+- US stocks
+- Indian stocks
+- ETFs
+- Crypto
+- Volatility index
 
-* Signal generation
-* Pattern discovery
-* Alpha ranking
-* Confidence scoring
+## Project Structure
 
-Research Intelligence
-
-* Research memory engine
-* Research analyzer
-* Research summary engine
-
-Pattern Intelligence
-
-* Pattern snapshots
-* Stability tracking
-* Survival analysis
-* Pattern decay detection
-
-Validation
-
-* Backtesting
-* Forward validation
-* Walk-forward testing
-
-Execution
-
-* Paper trading
-* Live monitoring
-* Signal logging
-
-Alerting
-
-* Change alerts
-* Telegram notifications
-* Market state alerts
-
-Memory
-
-* Historical market memory
-* Pattern memory
-* Research memory
-
-Architecture
-
-Data Collection
-→ Signal Discovery
-→ Pattern Analysis
-→ Confidence Scoring
-→ Research Intelligence
-→ Validation
-→ Execution
-→ Monitoring
-→ Memory
-
-Future Integration
-
-Mini Cube will serve as the intelligence hub for:
-
-* A3 Security System
-* Market Intelligence Platform
-* Future autonomous agents
-
-Status
-
-Research Platform — Active Development
+```text
+backend/      Backend and research chat tools
+config/       Asset universe and settings
+scripts/      Research engines and pipeline scripts
+data/         Generated research outputs
+reports/      Reports and summaries
