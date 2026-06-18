@@ -1,0 +1,55 @@
+MINI CUBE SYSTEM HEALTH REPORT
+Generated: 2026-06-14 13:37:43
+
+HEARTBEAT FILES
+- market_data: Status=CRITICAL | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+- news_data: Status=WARNING | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+- news_signals: Status=WARNING | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+- latest_stock_signals: Status=CRITICAL | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+- live_monitor_summary: Status=WARNING | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+- live_monitor_log: Status=WARNING | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+- alert_engine_log: Status=WARNING | Freshness=MISSING | Age=N/A | Size=0.0 MB | SizeStatus=UNKNOWN
+
+EVENT FILES
+- state_change_history: Status=INFO | Freshness=MISSING | Size=0.0 MB | SizeStatus=UNKNOWN
+- state_reason_history: Status=INFO | Freshness=MISSING | Size=0.0 MB | SizeStatus=UNKNOWN
+- mini_cube_state_log: Status=INFO | Freshness=MISSING | Size=0.0 MB | SizeStatus=UNKNOWN
+
+ARCHIVE FILES
+- all_stock_signals: Status=WARNING | Freshness=MISSING | Size=0.0 MB | SizeStatus=UNKNOWN
+- performance_log: Status=OK | Freshness=N/A | Size=0.0 MB | SizeStatus=OK
+
+LATEST RUNTIME STATUS
+- alert_engine.py: Runtime=0.04 sec | Status=FAILED
+- alpha_ranking_engine.py: Runtime=0.03 sec | Status=FAILED
+- auto_push.sh: Runtime=0.05 sec | Status=FAILED
+- change_detection_engine.py: Runtime=0.04 sec | Status=FAILED
+- download_data.py: Runtime=0.03 sec | Status=FAILED
+- fetch_news.py: Runtime=0.05 sec | Status=FAILED
+- forward_validation.py: Runtime=0.03 sec | Status=FAILED
+- market_state_engine.py: Runtime=0.03 sec | Status=FAILED
+- merge_engine.py: Runtime=0.03 sec | Status=FAILED
+- multi_horizon_statistics.py: Runtime=0.03 sec | Status=FAILED
+- news_engine.py: Runtime=0.04 sec | Status=FAILED
+- pattern_decay_detector.py: Runtime=0.03 sec | Status=FAILED
+- pattern_snapshot_engine.py: Runtime=0.04 sec | Status=FAILED
+- pattern_stability_tracker.py: Runtime=0.03 sec | Status=FAILED
+- pattern_survival_engine.py: Runtime=0.04 sec | Status=FAILED
+- research_memory_engine.py: Runtime=0.03 sec | Status=FAILED
+- research_summary_engine.py: Runtime=0.03 sec | Status=FAILED
+- run_pipeline.py: Runtime=0.83 sec | Status=OK
+- send_change_alert.py: Runtime=0.03 sec | Status=FAILED
+- send_telegram_alert.py: Runtime=0.03 sec | Status=FAILED
+- signal_engine.py: Runtime=0.04 sec | Status=FAILED
+- top_pattern_tracker.py: Runtime=0.03 sec | Status=FAILED
+- update_market_memory.py: Runtime=0.03 sec | Status=FAILED
+
+OPTIMIZATION RECOMMENDATIONS
+- market_data is missing.
+- news_data is missing.
+- news_signals is missing.
+- latest_stock_signals is missing.
+- live_monitor_summary is missing.
+- live_monitor_log is missing.
+- alert_engine_log is missing.
+- all_stock_signals is missing.

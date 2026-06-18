@@ -1,0 +1,3 @@
+Signal,Trades,WinRate,AvgReturn,Period
+UNCERTAINTY_EVENT,6,,,TRAIN
+UNCERTAINTY_EVENT,3,,,TEST

@@ -1,0 +1,6 @@
+Category,ResearchQuestion,Reason,Priority
+Signal Quality,Are high FinalScore signals actually producing better forward returns?,"Strong signals: 26, weak signals: 30",HIGH
+Sector Research,Is CRYPTO strength persistent or only a one-day spike?,Sector strength can be noisy if based on few tickers.,HIGH
+Pattern Reliability,Which high-confidence patterns survive across different market regimes?,High confidence patterns found: 33,HIGH
+Market Regime,Do signals work differently during TENSE_BULL market state?,"Same pattern may behave differently in BULL, BEAR, or TRANSITION markets.",MEDIUM
+Data Quality,Which files are causing unreliable research results?,Data quality warnings/errors found: 3,HIGH

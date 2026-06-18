@@ -1,0 +1,8 @@
+Category,Severity,Issue,Evidence,SuggestedFix
+ResearchMode,HIGH,Trading scripts still referenced in pipeline,"portfolio_construction_engine.py, portfolio_performance_tracker.py, paper_trade_executor.py, trade_performance_engine.py, equity_curve_engine.py, risk_analytics_engine.py",Comment out trading scripts if the system is now research-only.
+Patterns,MEDIUM,Low-sample patterns in signal_discovery_results.csv,85 rows have Trades < 30,Mark low-sample patterns as weak evidence.
+Patterns,MEDIUM,Low-sample patterns in pattern_stability_results.csv,353 rows have Appearances < 30,Mark low-sample patterns as weak evidence.
+Patterns,MEDIUM,Low-sample patterns in confidence_score_results.csv,353 rows have Appearances < 30,Mark low-sample patterns as weak evidence.
+Patterns,MEDIUM,Low-sample patterns in alpha_ranking_results.csv,13 rows have Trades < 30,Mark low-sample patterns as weak evidence.
+Sector,MEDIUM,Weak sector sample size,"Sectors with less than 3 tickers: CRYPTO, ETF, INDUSTRIAL",Add more tickers per sector or mark these sectors as low confidence.
+ResearchMode,LOW,Trading output files still exist,"model_portfolio.csv, portfolio_positions.csv, trade_performance_summary.csv, equity_curve.csv, risk_analytics.csv",Keep them archived or remove trading engines from run_pipeline.py.

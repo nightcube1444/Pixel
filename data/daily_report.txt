@@ -1,0 +1,81 @@
+==================================================
+MINI CUBE DAILY REPORT
+==================================================
+
+Generated: 2026-06-18 09:54:43
+
+MARKET STATE
+------------------------------
+Market State: TENSE_BULL
+SPY Regime: BULL
+VIX State: VIX_ELEVATED
+
+TOP SIGNALS
+------------------------------
+SLV | PANIC | HIGH_VOLATILITY | Score=65.0
+ETH-USD | PANIC | HIGH_VOLATILITY | Score=65.0
+GDX | PANIC | HIGH_VOLATILITY | Score=65.0
+TCS | PANIC | BEAR | Score=60.0
+PERSISTENT | PANIC | BEAR | Score=60.0
+INFY | PANIC | BEAR | Score=60.0
+BTC-USD | PANIC | BEAR | Score=60.0
+MSFT | PANIC | BEAR | Score=60.0
+MCD | PANIC | BEAR | Score=60.0
+MA | PANIC | BEAR | Score=60.0
+
+LIVE PATTERN MATCHES
+------------------------------
+ETH-USD | Alpha=18.38 | WinRate=58.99%
+GDX | Alpha=17.7 | WinRate=46.84%
+SLV | Alpha=17.7 | WinRate=46.84%
+YESBANK | Alpha=17.07 | WinRate=52.61%
+RKLB | Alpha=10.92 | WinRate=45.06%
+IRDM | Alpha=10.92 | WinRate=45.06%
+^VIX | Alpha=10.92 | WinRate=45.06%
+INFY | Alpha=10.27 | WinRate=66.33%
+BTC-USD | Alpha=10.27 | WinRate=66.33%
+JPM | Alpha=9.15 | WinRate=55.53%
+
+RECOMMENDATIONS
+------------------------------
+AMD | WATCH | Score=7.88
+TSLA | WATCH | Score=7.88
+BAC | WATCH | Score=4.29
+JPM | WATCH | Score=4.29
+GS | WATCH | Score=4.29
+V | NEUTRAL | Score=2.66
+JNJ | NEUTRAL | Score=1.41
+AMZN | AVOID | Score=-1.5
+AAPL | AVOID | Score=-1.78
+NFLX | AVOID | Score=-2.18
+
+MODEL PORTFOLIO
+------------------------------
+AMD | 25.94%
+TSLA | 25.94%
+BAC | 16.04%
+JPM | 16.04%
+GS | 16.04%
+
+OPEN PAPER TRADES
+------------------------------
+NFLX | PANIC | Entry=80.34
+ETH-USD | PANIC | Entry=1756.56
+MSFT | PANIC | Entry=384.79
+GDX | PANIC | Entry=84.36
+SLV | PANIC | Entry=60.61
+
+CLOSED TRADES
+------------------------------
+ETH-USD | -3.72% | STOP_HIT
+AMD | -7.22% | STOP_HIT
+^VIX | 9.14% | TARGET_HIT
+ETH-USD | 1.58% | SIGNAL_FLIP
+^VIX | -9.05% | STOP_HIT
+AAPL | 2.79% | TARGET_HIT
+IRDM | -8.18% | STOP_HIT
+^VIX | 2.05% | TARGET_HIT
+AMD | 3.01% | TARGET_HIT
+IRDM | 1.3% | SIGNAL_FLIP
+
+==================================================

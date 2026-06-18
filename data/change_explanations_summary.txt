@@ -1,0 +1,9 @@
+MINI CUBE CHANGE EXPLANATION SUMMARY
+Time: 2026-06-18 09:54:43
+
+Total explained changes: 1
+
+INFO:
+- MARKET_STATE | MarketState | BASELINE_MONITOR
+  Reason: Overall market state changed from TENSE_BULL to TENSE_BULL.
+  Action: Check if top alpha patterns still perform well under the new market state.

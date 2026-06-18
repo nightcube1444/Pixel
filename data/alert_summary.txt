@@ -1,0 +1,8 @@
+MINI CUBE ALERT ENGINE
+
+INFO
+----
+[MARKET_STATE] MarketState
+Type: BASELINE_MONITOR
+Score: 45
+Why: Market state changed: TENSE_BULL -> TENSE_BULL
