@@ -7,3 +7,17 @@ __pycache__/
 .env.*
 
 data/*.log
+
+# Large generated files
+
+data/historical_forward_returns.csv
+data/all_stock_signals.csv
+data/all_stock_signals_cleaned.csv
+data/all_stock_signals_with_context.csv
+data/behavior_events.csv
+
+ 
+
+# Frontend
+
+frontend/node_modules/
