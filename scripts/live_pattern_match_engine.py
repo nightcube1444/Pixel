@@ -1,105 +1,151 @@
 from pathlib import Path
 import pandas as pd
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-signals_file = BASE_DIR / "data/all_stock_signals_with_context.csv"
-alpha_file = BASE_DIR / "data/alpha_ranking_results.csv"
-output_file = BASE_DIR / "data/live_pattern_matches.csv"
-
-# -------------------------
-# Load files
-# -------------------------
-
-signals = pd.read_csv(signals_file)
-alpha = pd.read_csv(alpha_file)
-
-if signals.empty:
-    raise ValueError("No signal data found")
-
-if alpha.empty:
-    raise ValueError("No alpha ranking data found")
-
-# -------------------------
-# Latest signal per ticker
-# -------------------------
-
-signals["Date"] = pd.to_datetime(signals["Date"])
-
-latest_signals = (
-    signals
-    .sort_values("Date")
-    .groupby("Ticker")
-    .tail(1)
-    .copy()
+LIVE_MATCHES_FILE = Path(
+    "data/live_pattern_matches.csv"
 )
 
-# -------------------------
-# Match patterns
-# -------------------------
+TRUST_FILE = Path(
+    "data/trusted_patterns.csv"
+)
 
-matches = []
+OUTPUT_FILE = Path(
+    "data/live_pattern_matches.csv"
+)
 
-for _, row in latest_signals.iterrows():
 
-    pattern = str(row.get("CrossAssetPattern", "")).strip()
+def main():
 
-    if pattern == "":
-        continue
+    print("\nLIVE PATTERN MATCH ENGINE\n")
 
-    alpha_match = alpha[
-        alpha["Pattern"].astype(str).str.strip() == pattern
-    ]
-
-    if alpha_match.empty:
-        continue
-
-    alpha_row = alpha_match.iloc[0]
-
-    matches.append({
-        "Ticker": row["Ticker"],
-        "Date": row["Date"],
-        "Pattern": pattern,
-        "PrimarySignal": row.get("PrimarySignal", "NONE"),
-        "MarketRegime": row.get("MarketRegime", "UNKNOWN"),
-        "AlphaRank": alpha_row["AlphaRank"],
-        "Trades": alpha_row["Trades"],
-        "WinRate": alpha_row["WinRate"],
-        "AlphaScore": alpha_row["AlphaScore"]
-    })
-
-# -------------------------
-# Output
-# -------------------------
-
-results = pd.DataFrame(matches)
-
-if results.empty:
-    print("No historical alpha matches found.")
-else:
-
-    results = results.sort_values(
-        ["AlphaScore", "WinRate"],
-        ascending=False
+    live_matches = pd.read_csv(
+        LIVE_MATCHES_FILE
     )
 
-    results.to_csv(output_file, index=False)
+    trust_df = pd.read_csv(
+        TRUST_FILE
+    )
 
-    print("\nLIVE PATTERN MATCHES\n")
+    trust_df = trust_df[
+        [
+            "Pattern",
+            "TrustLevel",
+            "ConfidenceScore",
+            "PValue",
+            "ValidationStatus"
+        ]
+    ]
+
+    # Remove old trust columns if they exist
+    columns_to_remove = [
+        "TrustLevel",
+        "ConfidenceScore",
+        "PValue",
+        "ValidationStatus",
+        "TrustRank"
+    ]
+
+    live_matches = live_matches.drop(
+        columns=[
+            col
+            for col in columns_to_remove
+            if col in live_matches.columns
+        ],
+        errors="ignore"
+    )
+
+    # Merge trust data
+    live_matches = live_matches.merge(
+        trust_df,
+        on="Pattern",
+        how="left",
+        validate="many_to_one"
+    )
+
+    # Fill missing values
+    live_matches["TrustLevel"] = (
+        live_matches["TrustLevel"]
+        .fillna("UNTRUSTED")
+    )
+
+    live_matches["ConfidenceScore"] = (
+        pd.to_numeric(
+            live_matches["ConfidenceScore"],
+            errors="coerce"
+        )
+        .fillna(0)
+    )
+
+    live_matches["PValue"] = (
+        pd.to_numeric(
+            live_matches["PValue"],
+            errors="coerce"
+        )
+        .fillna(1)
+    )
+
+    live_matches["ValidationStatus"] = (
+        live_matches["ValidationStatus"]
+        .fillna("NOT_VALIDATED")
+    )
+
+    trust_rank_map = {
+        "INSTITUTIONAL": 5,
+        "HIGH": 4,
+        "MEDIUM": 3,
+        "LOW": 2,
+        "UNTRUSTED": 1
+    }
+
+    live_matches["TrustRank"] = (
+        live_matches["TrustLevel"]
+        .map(trust_rank_map)
+        .fillna(1)
+    )
+
+    live_matches = live_matches.sort_values(
+        by=[
+            "TrustRank",
+            "AlphaScore"
+        ],
+        ascending=[False, False]
+    )
+
+    live_matches.to_csv(
+        OUTPUT_FILE,
+        index=False
+    )
 
     print(
-        results[
+        live_matches[
             [
                 "Ticker",
-                "PrimarySignal",
                 "Pattern",
-                "Trades",
+                "TrustLevel",
+                "ConfidenceScore",
                 "WinRate",
                 "AlphaScore"
             ]
-        ].head(20)
+        ]
+        .head(25)
+        .to_string(index=False)
     )
 
-    print()
-    print(f"Matches found: {len(results)}")
-    print(f"Saved to {output_file}")
+    print("\nTrust Summary")
+
+    print(
+        live_matches["TrustLevel"]
+        .value_counts()
+    )
+
+    print(
+        f"\nMatches found: {len(live_matches)}"
+    )
+
+    print(
+        f"Saved to {OUTPUT_FILE}"
+    )
+
+
+if __name__ == "__main__":
+    main()

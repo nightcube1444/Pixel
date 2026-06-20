@@ -1,0 +1,36 @@
+.ticker {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  border: none;
+  border-radius: 6px;
+  background: #4b5563;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.ticker:hover {
+  background: #6b7280;
+}
+
+.ticker.active {
+  background: #2563eb;
+}
+
+.chart-box {
+  height: 420px;
+  width: 100%;
+}
+.explain-card {
+  background: #374151;
+  padding: 15px;
+  border-radius: 10px;
+  line-height: 1.5;
+}
+
+.pattern-text {
+  font-size: 13px;
+  color: #93c5fd;
+  word-break: break-word;
+}

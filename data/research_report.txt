@@ -1,7 +1,7 @@
 ============================================================
 MINI CUBE RESEARCH REPORT
 ============================================================
-Generated: 2026-06-18 10:37:26
+Generated: 2026-06-20 11:43:22
 
 
 1. MARKET STATE
@@ -17,27 +17,27 @@ Regime Shift: False
 ---------------
 
 Files checked: 7
-Warnings/errors: 3
+Warnings/errors: 4
 
                         File   Rows  SizeMB  Status            Issue
-             market_data.csv 208043   21.81      OK   No major issue
+             market_data.csv 208100   21.82 WARNING NaN values found
     latest_stock_signals.csv     56    0.01 WARNING NaN values found
-       all_stock_signals.csv 208043   50.50 WARNING NaN values found
-         sector_strength.csv      8    0.00      OK   No major issue
+       all_stock_signals.csv 208099   50.51 WARNING NaN values found
+         sector_strength.csv     13    0.00      OK   No major issue
 signal_discovery_results.csv    353    0.03      OK   No major issue
 confidence_score_results.csv    353    0.04      OK   No major issue
-            market_state.csv   4140    0.26 WARNING NaN values found
+            market_state.csv   4141    0.26 WARNING NaN values found
 
 
 3. NAN / MISSING VALUE HOTSPOTS
 -------------------------------
 
                  File         Column  NaNCount  NaNPct   Status
-all_stock_signals.csv     PatternKey    208043  100.00 HIGH_NAN
-all_stock_signals.csv   RSI_Oversold    196142   94.28 HIGH_NAN
-all_stock_signals.csv RSI_Overbought    186776   89.78 HIGH_NAN
-all_stock_signals.csv          Panic    158959   76.41 HIGH_NAN
-all_stock_signals.csv       Momentum    155837   74.91 HIGH_NAN
+all_stock_signals.csv     PatternKey    208099  100.00 HIGH_NAN
+all_stock_signals.csv   RSI_Oversold    196196   94.28 HIGH_NAN
+all_stock_signals.csv RSI_Overbought    186828   89.78 HIGH_NAN
+all_stock_signals.csv          Panic    158991   76.40 HIGH_NAN
+all_stock_signals.csv       Momentum    155880   74.91 HIGH_NAN
 all_stock_signals.csv          MA200     11144    5.36  LOW_NAN
 all_stock_signals.csv           MA50      2744    1.32  LOW_NAN
 all_stock_signals.csv   RollingVol20      1120    0.54  LOW_NAN
@@ -49,57 +49,59 @@ all_stock_signals.csv   Daily Return        56    0.03  LOW_NAN
 ---------------------
 
            Category Priority                                                        ResearchQuestion                                                                    Reason
-     Signal Quality     HIGH  Are high FinalScore signals actually producing better forward returns?                                      Strong signals: 24, weak signals: 32
-    Sector Research     HIGH                  Is CRYPTO strength persistent or only a one-day spike?                     Sector strength can be noisy if based on few tickers.
-Pattern Reliability     HIGH Which high-confidence patterns survive across different market regimes?                                        High confidence patterns found: 38
+     Signal Quality     HIGH  Are high FinalScore signals actually producing better forward returns?                                      Strong signals: 21, weak signals: 35
+    Sector Research     HIGH              Is VOLATILITY strength persistent or only a one-day spike?                     Sector strength can be noisy if based on few tickers.
+Pattern Reliability     HIGH Which high-confidence patterns survive across different market regimes?                                        High confidence patterns found: 81
       Market Regime   MEDIUM             Do signals work differently during TENSE_BULL market state? Same pattern may behave differently in BULL, BEAR, or TRANSITION markets.
-       Data Quality     HIGH                    Which files are causing unreliable research results?                                     Data quality warnings/errors found: 3
+       Data Quality     HIGH                    Which files are causing unreliable research results?                                     Data quality warnings/errors found: 4
 
 
 5. KNOWLEDGE CONTEXT
 --------------------
 
-           Category Priority             ConceptTitle   Topic                                                                                     ResearchHint
-     Signal Quality     HIGH                     MACD Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH       Technical analysis Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH     Fundamental analysis Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH              Backtesting Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH Statistical significance Science Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH                  P-value Science Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH            Data snooping Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-     Signal Quality     HIGH       Momentum investing Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
-    Sector Research     HIGH                      NaN     NaN                 Not enough knowledge context found. Add more concepts to the knowledge database.
-Pattern Reliability     HIGH              Bull market Markets                                  Require minimum sample size before trusting confidence results.
+       Category Priority             ConceptTitle   Topic                                                                                     ResearchHint
+ Signal Quality     HIGH                     MACD Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH       Technical analysis Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH     Fundamental analysis Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH              Backtesting Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH Statistical significance Science Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH                  P-value Science Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH            Data snooping Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+ Signal Quality     HIGH       Momentum investing Markets Compare forward returns of high-score signals versus low-score signals using 5D and 10D windows.
+Sector Research     HIGH     Volatility (finance) Markets               Study this pattern separately during calm VIX, elevated VIX, and high VIX periods.
+Sector Research     HIGH         Volatility index Markets               Study this pattern separately during calm VIX, elevated VIX, and high VIX periods.
 
 
 6. LATEST SIGNAL SNAPSHOT
 -------------------------
 
- Ticker PrimarySignal    MarketRegime  FinalScore
-    GDX         PANIC HIGH_VOLATILITY        65.0
-ETH-USD         PANIC HIGH_VOLATILITY        65.0
-    SLV         PANIC HIGH_VOLATILITY        65.0
-   MSFT         PANIC            BEAR        60.0
-     MA         PANIC            BEAR        60.0
-   TSLA         PANIC            BEAR        60.0
-    MCD         PANIC            BEAR        60.0
-BTC-USD         PANIC            BEAR        60.0
-   INFY         PANIC            BEAR        60.0
-    SPY         PANIC            BULL        58.0
+    Ticker PrimarySignal    MarketRegime  FinalScore
+       GDX         PANIC HIGH_VOLATILITY        65.0
+      IRDM         PANIC HIGH_VOLATILITY        65.0
+      ^VIX         PANIC HIGH_VOLATILITY        65.0
+       SLV         PANIC HIGH_VOLATILITY        65.0
+PERSISTENT         PANIC            BEAR        60.0
+       LMT         PANIC            BEAR        60.0
+       TCS         PANIC            BEAR        60.0
+      INFY         PANIC            BEAR        60.0
+       NOC         PANIC            BEAR        60.0
+      RVNL         PANIC            BEAR        60.0
 
 
 7. SECTOR STRENGTH
 ------------------
 
     Sector  AvgScore  MaxScore  MinScore  StockCount TopTicker
-    CRYPTO     62.50      65.0      60.0           2   ETH-USD
-       ETF     58.00      58.0      58.0           2       QQQ
-  CONSUMER     56.67      60.0      55.0           6       MCD
-      TECH     49.67      60.0      10.0           6      MSFT
- COMMODITY     47.50      65.0       5.0           4       GDX
-INDUSTRIAL     25.00      45.0       5.0           2       RTX
- FINANCIAL     22.12      60.0       5.0           8        MA
-    ENERGY     18.75      55.0       5.0           4       CVX
+VOLATILITY     65.00      65.0      65.0           1      ^VIX
+    ENERGY     54.60      60.0      48.0           5  RELIANCE
+INDUSTRIAL     45.75      60.0       8.0           4       LMT
+      TECH     45.75      60.0       8.0           8      INFY
+  CONSUMER     43.33      60.0       5.0           6       MCD
+     SPACE     40.00      65.0      15.0           2      IRDM
+    CRYPTO     32.50      50.0      15.0           2   BTC-USD
+    METALS     30.00      55.0       5.0           2      SAIL
+ COMMODITY     29.00      65.0       5.0           5       GDX
+       ETF     28.00      48.0       8.0           2       QQQ
 
 Warning: Some sectors have less than 3 tickers. Sector results may be noisy.
 
@@ -124,48 +126,48 @@ Warning: Some sectors have less than 3 tickers. Sector results may be noisy.
 --------------------
 
  StabilityRank                                                                  Pattern  AvgReturn
-             1                     OVERSOLD|HIGH_VOLATILITY|NORMAL|SIDEWAYS|VIX_EXTREME     13.853
-             2                      OVERBOUGHT|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_HIGH     11.567
-             3                        MOMENTUM|INSUFFICIENT_HISTORY|NORMAL|BULL|VIX_LOW     11.014
-             4 OVERSOLD|HIGH_VOLATILITY|NORMAL|SPY_INSUFFICIENT_HISTORY|VIX_UNAVAILABLE     10.093
-             5                     OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME      9.802
-             6                             OVERBOUGHT|SIDEWAYS|NORMAL|HIGH_VOL|VIX_HIGH      9.538
-             7                                MOMENTUM|SIDEWAYS|NORMAL|BULL|VIX_EXTREME      9.237
-             8                                    MOMENTUM|BULL|NORMAL|BULL|VIX_EXTREME      8.145
-             9                 MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|SIDEWAYS|VIX_HIGH      7.714
-            10                      MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|BULL|VIX_LOW      6.407
+             1                     OVERSOLD|HIGH_VOLATILITY|NORMAL|SIDEWAYS|VIX_EXTREME     13.084
+             2                     OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME     11.651
+             3                      OVERBOUGHT|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_HIGH     11.529
+             4 OVERSOLD|HIGH_VOLATILITY|NORMAL|SPY_INSUFFICIENT_HISTORY|VIX_UNAVAILABLE     11.347
+             5                             OVERBOUGHT|SIDEWAYS|NORMAL|HIGH_VOL|VIX_HIGH      9.579
+             6                                MOMENTUM|SIDEWAYS|NORMAL|BULL|VIX_EXTREME      9.274
+             7                                    MOMENTUM|BULL|NORMAL|BULL|VIX_EXTREME      9.019
+             8                        MOMENTUM|INSUFFICIENT_HISTORY|NORMAL|BULL|VIX_LOW      6.857
+             9                 MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|SIDEWAYS|VIX_HIGH      5.955
+            10                                  MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME      5.879
 
 
 10. CONFIDENCE SCORES
 ---------------------
 
  ConfidenceRank                                                Pattern  AvgReturn  ConfidenceScore
-              1            PANIC|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW      4.315         228.6220
-              2    PANIC|HIGH_VOLATILITY|VOLATILE|HIGH_VOL|VIX_EXTREME      4.155         194.7191
-              3         MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW      3.194         162.8802
-              4                   PANIC|BEAR|VOLATILE|BEAR|VIX_EXTREME      3.276         104.1342
-              5   OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME      9.802         102.5793
-              6    PANIC|HIGH_VOLATILITY|VOLATILE|SIDEWAYS|VIX_EXTREME      3.129          85.5654
-              7                      PANIC|BULL|VOLATILE|BULL|VIX_HIGH      2.264          84.1736
-              8 MOMENTUM|HIGH_VOLATILITY|VOLATILE|HIGH_VOL|VIX_EXTREME      1.988          83.7361
-              9    MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|BULL|VIX_LOW      6.407          81.6832
-             10   OVERSOLD|HIGH_VOLATILITY|NORMAL|SIDEWAYS|VIX_EXTREME     13.853          81.3094
+              1            PANIC|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW      3.729         305.5917
+              2    PANIC|HIGH_VOLATILITY|VOLATILE|HIGH_VOL|VIX_EXTREME      4.141         292.7186
+              3         MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW      2.883         230.8889
+              4   OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME     11.651         207.5502
+              5                   PANIC|BEAR|VOLATILE|BEAR|VIX_EXTREME      3.118         148.8848
+              6 MOMENTUM|HIGH_VOLATILITY|VOLATILE|HIGH_VOL|VIX_EXTREME      2.197         142.1466
+              7    PANIC|HIGH_VOLATILITY|VOLATILE|SIDEWAYS|VIX_EXTREME      3.267         140.1006
+              8                      PANIC|BULL|VOLATILE|BULL|VIX_HIGH      2.365         134.4982
+              9           OVERBOUGHT|SIDEWAYS|NORMAL|HIGH_VOL|VIX_HIGH      9.579         121.0478
+             10                  PANIC|SIDEWAYS|VOLATILE|BULL|VIX_HIGH      2.037         119.1632
 
 
 11. ALPHA RANKING
 -----------------
 
  AlphaRank                                              Pattern  WinRate  AvgReturn  AlphaScore
-         1 OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME    71.79      7.613    211.3547
-         2          PANIC|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW    54.31      2.065    189.4897
-         3  PANIC|HIGH_VOLATILITY|VOLATILE|HIGH_VOL|VIX_EXTREME    60.84      1.786    139.9403
-         4                 PANIC|BEAR|VOLATILE|BEAR|VIX_EXTREME    67.28      2.359    100.3327
-         5       MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW    49.30      1.430     86.7424
-         6              MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME    77.78      3.984     65.7532
-         7         PANIC|SIDEWAYS|VOLATILE|HIGH_VOL|VIX_EXTREME    43.96     -4.245     60.1762
-         8      OVERBOUGHT|HIGH_VOLATILITY|NORMAL|BULL|VIX_HIGH    65.62      3.384     59.9240
-         9  PANIC|HIGH_VOLATILITY|VOLATILE|SIDEWAYS|VIX_EXTREME    56.66      1.728     53.1120
-        10  MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|BULL|VIX_LOW    47.42      2.383     51.7682
+         1 OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME    71.79      7.613    408.4254
+         2          PANIC|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW    54.31      2.065    250.6114
+         3  PANIC|HIGH_VOLATILITY|VOLATILE|HIGH_VOL|VIX_EXTREME    60.84      1.786    206.9301
+         4                 PANIC|BEAR|VOLATILE|BEAR|VIX_EXTREME    67.28      2.359    139.6718
+         5       MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW    49.30      1.430    120.8656
+         6         PANIC|SIDEWAYS|VOLATILE|HIGH_VOL|VIX_EXTREME    43.96     -4.245    100.9251
+         7              MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME    77.78      3.984     90.9773
+         8  PANIC|HIGH_VOLATILITY|VOLATILE|SIDEWAYS|VIX_EXTREME    56.66      1.728     83.4208
+         9      OVERBOUGHT|HIGH_VOLATILITY|NORMAL|BULL|VIX_HIGH    65.62      3.384     74.8344
+        10        OVERSOLD|SIDEWAYS|NORMAL|SIDEWAYS|VIX_EXTREME    72.29      2.786     70.8326
 
 
 12. NEW RESEARCH IDEAS

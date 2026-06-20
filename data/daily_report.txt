@@ -2,7 +2,7 @@
 MINI CUBE DAILY REPORT
 ==================================================
 
-Generated: 2026-06-18 09:54:43
+Generated: 2026-06-20 11:43:27
 
 MARKET STATE
 ------------------------------
@@ -12,29 +12,29 @@ VIX State: VIX_ELEVATED
 
 TOP SIGNALS
 ------------------------------
-SLV | PANIC | HIGH_VOLATILITY | Score=65.0
-ETH-USD | PANIC | HIGH_VOLATILITY | Score=65.0
 GDX | PANIC | HIGH_VOLATILITY | Score=65.0
-TCS | PANIC | BEAR | Score=60.0
+IRDM | PANIC | HIGH_VOLATILITY | Score=65.0
+^VIX | PANIC | HIGH_VOLATILITY | Score=65.0
+SLV | PANIC | HIGH_VOLATILITY | Score=65.0
 PERSISTENT | PANIC | BEAR | Score=60.0
+LMT | PANIC | BEAR | Score=60.0
+TCS | PANIC | BEAR | Score=60.0
 INFY | PANIC | BEAR | Score=60.0
-BTC-USD | PANIC | BEAR | Score=60.0
-MSFT | PANIC | BEAR | Score=60.0
-MCD | PANIC | BEAR | Score=60.0
-MA | PANIC | BEAR | Score=60.0
+NOC | PANIC | BEAR | Score=60.0
+RVNL | PANIC | BEAR | Score=60.0
 
 LIVE PATTERN MATCHES
 ------------------------------
-ETH-USD | Alpha=18.38 | WinRate=58.99%
-GDX | Alpha=17.7 | WinRate=46.84%
-SLV | Alpha=17.7 | WinRate=46.84%
-YESBANK | Alpha=17.07 | WinRate=52.61%
-RKLB | Alpha=10.92 | WinRate=45.06%
-IRDM | Alpha=10.92 | WinRate=45.06%
-^VIX | Alpha=10.92 | WinRate=45.06%
-INFY | Alpha=10.27 | WinRate=66.33%
-BTC-USD | Alpha=10.27 | WinRate=66.33%
-JPM | Alpha=9.15 | WinRate=55.53%
+BEL | Alpha=12.88 | WinRate=52.29%
+QQQ | Alpha=12.88 | WinRate=52.29%
+SBIN | Alpha=12.88 | WinRate=52.29%
+JPM | Alpha=12.24 | WinRate=55.48%
+BAC | Alpha=12.24 | WinRate=55.48%
+SUZLON | Alpha=2.44 | WinRate=52.13%
+YESBANK | Alpha=1.19 | WinRate=52.15%
+AAPL | Alpha=1.19 | WinRate=52.15%
+RKLB | Alpha=19.81 | WinRate=46.76%
+ETH-USD | Alpha=19.81 | WinRate=46.76%
 
 RECOMMENDATIONS
 ------------------------------
@@ -60,22 +60,15 @@ GS | 16.04%
 OPEN PAPER TRADES
 ------------------------------
 NFLX | PANIC | Entry=80.34
-ETH-USD | PANIC | Entry=1756.56
-MSFT | PANIC | Entry=384.79
-GDX | PANIC | Entry=84.36
-SLV | PANIC | Entry=60.61
+GDX | PANIC | Entry=82.51
+IRDM | PANIC | Entry=44.57
 
 CLOSED TRADES
 ------------------------------
-ETH-USD | -3.72% | STOP_HIT
-AMD | -7.22% | STOP_HIT
-^VIX | 9.14% | TARGET_HIT
+ETH-USD | -2.0% | STOP_HIT
+RKLB | 2.0% | TARGET_HIT
+^VIX | -2.0% | STOP_HIT
 ETH-USD | 1.58% | SIGNAL_FLIP
-^VIX | -9.05% | STOP_HIT
-AAPL | 2.79% | TARGET_HIT
-IRDM | -8.18% | STOP_HIT
-^VIX | 2.05% | TARGET_HIT
-AMD | 3.01% | TARGET_HIT
-IRDM | 1.3% | SIGNAL_FLIP
+GDX | 2.0% | TARGET_HIT
 
 ==================================================

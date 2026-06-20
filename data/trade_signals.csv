@@ -1,0 +1,8 @@
+Date,Ticker,Decision,Reason,EntryPrice,TargetPrice,StopLoss,RiskPerTradePct,MaxLossAmount,Shares,CapitalNeeded,FinalScore,AlphaScore,WinRate,Trades,RiskLevel,ActionSource,CrossAssetActionBias,PatternType
+2026-06-20,IRDM,WATCH,Cross-asset risk is CAUTIOUS. Paper trade only.,44.57,51.26,41.45,1.0,100.0,32,1426.24,65.0,0.0,0.0,0.0,SPECULATIVE,AVOID_FOR_NOW,CAUTIOUS,TENSE_BULL
+2026-06-20,RVNL,WATCH,Cross-asset risk is CAUTIOUS. Paper trade only.,243.99,280.59,226.91,1.0,100.0,5,1219.95,60.0,0.0,0.0,0.0,SPECULATIVE,AVOID_FOR_NOW,CAUTIOUS,TENSE_BULL
+2026-06-20,RKLB,NO_TRADE,Low sample size. Not enough evidence. Avoid for now.,,,,,,,,15.0,19.8121,46.76,1696.0,SPECULATIVE,AVOID_FOR_NOW,PAPER_ONLY_LOW_SAMPLE,TENSE_BULL
+2026-06-20,IREDA,NO_TRADE,Low sample size. Not enough evidence. Avoid for now.,,,,,,,,10.0,0.7074,44.74,380.0,SPECULATIVE,AVOID_FOR_NOW,PAPER_ONLY_LOW_SAMPLE,TENSE_BULL
+2026-06-20,IRFC,NO_TRADE,Low sample size. Not enough evidence. Avoid for now.,,,,,,,,10.0,0.0,0.0,0.0,SPECULATIVE,AVOID_FOR_NOW,PAPER_ONLY_LOW_SAMPLE,TENSE_BULL
+2026-06-20,YESBANK,NO_TRADE,Low sample size. Not enough evidence. Avoid for now.,,,,,,,,8.0,1.1882,52.15,1770.0,SPECULATIVE,AVOID_FOR_NOW,PAPER_ONLY_LOW_SAMPLE,TENSE_BULL
+2026-06-20,IDEA,NO_TRADE,Low sample size. Not enough evidence. Avoid for now.,,,,,,,,8.0,0.0,0.0,0.0,SPECULATIVE,AVOID_FOR_NOW,PAPER_ONLY_LOW_SAMPLE,TENSE_BULL

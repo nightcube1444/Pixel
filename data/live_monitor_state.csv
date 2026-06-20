@@ -1,2 +1,2 @@
 Timestamp,MarketState,TopTicker,TopPrimarySignal,TopMarketRegime,TopVolatility,TopScore,TopPriorityScore,BullCount,BearCount,SidewaysCount,HighVolCount,PanicCount,MomentumCount,OversoldCount,OverboughtCount,SourceFile
-2026-06-18 09:54:41,SIDEWAYS,GDX,PANIC,HIGH_VOLATILITY,VOLATILE,65.0,75,12,14,23,7,22,10,0,3,latest_stock_signals.csv
+2026-06-20 11:43:23,SIDEWAYS,GDX,PANIC,HIGH_VOLATILITY,VOLATILE,65.0,75,13,15,21,7,20,11,1,3,latest_stock_signals.csv

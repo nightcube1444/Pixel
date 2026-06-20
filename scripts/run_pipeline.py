@@ -13,49 +13,123 @@ PERFORMANCE_LOG_PATH = BASE_DIR / "data/performance_log.csv"
 mode = sys.argv[1] if len(sys.argv) > 1 else "research"
 
 research_scripts = [
+
+    # ==========================================
+    # DATA COLLECTION
+    # ==========================================
     "scripts/fetch_news.py",
     "scripts/news_engine.py",
     "scripts/download_data.py",
+
+    # ==========================================
+    # MARKET CONTEXT
+    # ==========================================
     "scripts/benchmark_context_engine.py",
     "scripts/market_state_engine.py",
 
+    # ==========================================
+    # SIGNAL GENERATION
+    # ==========================================
     "scripts/signal_engine.py",
     "scripts/signal_cleaner_engine.py",
     "scripts/sector_strength_engine.py",
+
+    # ==========================================
+    # DATA MERGE
+    # ==========================================
     "scripts/merge_engine.py",
     "scripts/cross_asset_merge_engine.py",
+    "scripts/cross_asset_pattern_recognition_engine.py",
 
+    # ==========================================
+    # FORWARD RETURNS
+    # ==========================================
+    "scripts/historical_forward_return_engine.py",
     "scripts/forward_validation.py",
+
+    # ==========================================
+    # PATTERN DISCOVERY
+    # ==========================================
     "scripts/signal_discovery_engine.py",
     "scripts/update_market_memory.py",
     "scripts/pattern_stability_tracker.py",
     "scripts/confidence_score_engine.py",
     "scripts/alpha_ranking_engine.py",
-    "scripts/pattern_snapshot_engine.py", 
+
+    # ==========================================
+    # REGIME INTELLIGENCE
+    # ==========================================
+    "scripts/regime_pattern_survival_engine_v2.py",
+    "scripts/pattern_regime_generalization_engine.py",
+    "scripts/institutional_pattern_registry.py",
+
+    "scripts/sector_alpha_engine.py",
+    "scripts/pattern_sector_matrix.py",
+    "scripts/ticker_pattern_history_engine.py",
+    "scripts/institutional_pattern_ticker_registry.py",
+
+    # ==========================================
+    # LIVE INSTITUTIONAL SCANNER
+    # ==========================================
+    "scripts/live_pattern_match_engine.py",
+    "scripts/institutional_opportunity_engine.py",
+    "scripts/institutional_recommendation_engine.py",
+
+    # ==========================================
+    # SNAPSHOTS / MEMORY
+    # ==========================================
+    "scripts/pattern_snapshot_engine.py",
+
+    # ==========================================
+    # CHANGE TRACKING
+    # ==========================================
     "scripts/change_detection_engine.py",
     "scripts/change_explanation_engine.py",
+
+    # ==========================================
+    # QUALITY CONTROL
+    # ==========================================
     "scripts/data_quality_engine.py",
     "scripts/nan_inspector_engine.py",
+    "scripts/error_audit_engine.py",
+
+    # ==========================================
+    # RESEARCH LAYER
+    # ==========================================
     "scripts/research_question_engine.py",
     "scripts/research_knowledge_engine.py",
-    "scripts/error_audit_engine.py",
+
+    # ==========================================
+    # WATCHLISTS
+    # ==========================================
+    "scripts/speculative_watchlist_engine.py",
+
+    # ==========================================
+    # REPORTING
+    # ==========================================
     "scripts/research_report_engine.py",
 ]
 
 trading_scripts = [
-    "scripts/live_pattern_match_engine.py",
+
     "scripts/context_aware_recommendation_engine.py",
     "scripts/live_alpha_dashboard.py",
     "scripts/live_monitor.py",
+
     "scripts/portfolio_construction_engine.py",
     "scripts/portfolio_performance_tracker.py",
+
     "scripts/paper_trade_executor.py",
     "scripts/trade_performance_engine.py",
+
     "scripts/equity_curve_engine.py",
     "scripts/risk_analytics_engine.py",
+
     "scripts/daily_report_engine.py",
-    "scripts/change_detection_engine.py",
-    "scripts/change_explanation_engine.py",
+
+    "scripts/speculative_trade_journal_engine.py",
+    "scripts/speculative_exit_tracker.py",
+    "scripts/trade_signal_engine.py",
 ]
 
 if mode == "research":

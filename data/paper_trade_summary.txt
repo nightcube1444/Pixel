@@ -1,8 +1,8 @@
 MINI CUBE PAPER TRADE EXECUTOR
-Time: 2026-06-18 09:54:42
-New entries: 0
-Closed trades: 0
-Open positions: 5
+Time: 2026-06-20 11:43:26
+New entries: 2
+Closed trades: 2
+Open positions: 3
 
 Open Tickers:
-NFLX, ETH-USD, MSFT, GDX, SLV
+NFLX, GDX, IRDM

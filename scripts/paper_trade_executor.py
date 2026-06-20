@@ -3,6 +3,7 @@ from datetime import datetime
 import pandas as pd
 
 SIGNALS_PATH = Path("data/latest_stock_signals.csv")
+MARKET_DATA_PATH = Path("data/market_data.csv")
 OPEN_POSITIONS_PATH = Path("data/open_paper_positions.csv")
 TRADE_LOG_PATH = Path("data/paper_trade_log.csv")
 SUMMARY_PATH = Path("data/paper_trade_summary.txt")
@@ -60,12 +61,18 @@ def ensure_trade_log_file() -> pd.DataFrame:
             "ExitPrice",
             "HoldingBars",
             "ReturnPct",
+            "RawClose",
+            "RawReturnPct",
             "WinLoss",
             "ExitReason",
             "PatternKey",
         ])
     if "ExitReason" not in df.columns:
         df["ExitReason"] = ""
+    if "RawClose" not in df.columns:
+        df["RawClose"] = df.get("ExitPrice", "")
+    if "RawReturnPct" not in df.columns:
+        df["RawReturnPct"] = df.get("ReturnPct", "")
     return df
 
 
@@ -101,6 +108,54 @@ def load_latest_signals() -> pd.DataFrame:
     return df
 
 
+def load_market_ohlc() -> pd.DataFrame:
+    """Load Ticker/Date/High/Low so exits can detect an intrabar touch of the
+    target or stop level, instead of only comparing against the latest Close.
+    Returns an empty frame (not an error) if market_data.csv is unavailable,
+    since the executor can still fall back to Close-only behavior."""
+    df = safe_read_csv(MARKET_DATA_PATH)
+    if df is None:
+        return pd.DataFrame(columns=["Ticker", "Date", "High", "Low"])
+
+    required = ["Ticker", "Date", "High", "Low"]
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        return pd.DataFrame(columns=["Ticker", "Date", "High", "Low"])
+
+    df = df.copy()
+    df["Ticker"] = df["Ticker"].astype(str).str.strip().str.upper()
+    df["DateObj"] = pd.to_datetime(df["Date"], errors="coerce")
+    df["Date"] = df["DateObj"].dt.strftime("%Y-%m-%d")
+    df["High"] = pd.to_numeric(df["High"], errors="coerce")
+    df["Low"] = pd.to_numeric(df["Low"], errors="coerce")
+
+    return df.dropna(subset=["Ticker", "Date"])[["Ticker", "Date", "DateObj", "High", "Low"]]
+
+
+def build_ohlc_lookups(ohlc_df: pd.DataFrame) -> tuple[dict, dict]:
+    """Build two lookups: an exact (Ticker, Date) -> (High, Low) map for the
+    bar matching today's signal snapshot, and a fallback latest-bar-per-ticker
+    map for when the exact date isn't present yet."""
+    if ohlc_df.empty:
+        return {}, {}
+
+    exact = {
+        (r["Ticker"], r["Date"]): (r["High"], r["Low"])
+        for _, r in ohlc_df.iterrows()
+    }
+
+    latest = (
+        ohlc_df.sort_values("DateObj")
+        .groupby("Ticker")
+        .tail(1)
+        .set_index("Ticker")[["High", "Low"]]
+        .apply(tuple, axis=1)
+        .to_dict()
+    )
+
+    return exact, latest
+
+
 def choose_entries(signals_df: pd.DataFrame, open_df: pd.DataFrame) -> pd.DataFrame:
     open_tickers = set(open_df["Ticker"].astype(str).str.upper()) if not open_df.empty else set()
 
@@ -129,7 +184,12 @@ def choose_entries(signals_df: pd.DataFrame, open_df: pd.DataFrame) -> pd.DataFr
     return candidates.head(limit)
 
 
-def update_open_positions(open_df: pd.DataFrame, signals_df: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]]:
+def update_open_positions(
+    open_df: pd.DataFrame,
+    signals_df: pd.DataFrame,
+    exact_ohlc: dict,
+    latest_ohlc: dict,
+) -> tuple[pd.DataFrame, list[dict]]:
     exits = []
     latest_map = {row["Ticker"]: row for _, row in signals_df.iterrows()}
     remaining_rows = []
@@ -143,25 +203,54 @@ def update_open_positions(open_df: pd.DataFrame, signals_df: pd.DataFrame) -> tu
 
         live_row = latest_map[ticker]
         entry_price = float(pos["EntryPrice"])
-        exit_price = float(live_row["Close"])
+        close_price = float(live_row["Close"])
+        signal_date = str(live_row.get("Date", ""))
         holding_bars = int(pos.get("HoldingBars", 0)) + 1
-        return_pct = round(((exit_price - entry_price) / entry_price) * 100, 2)
+
+        # Prefer the exact day's High/Low so a target/stop that was only
+        # touched intrabar still counts, instead of requiring the Close
+        # itself to land beyond the threshold. Fall back to Close if no
+        # OHLC bar is available for this ticker/date.
+        day_high, day_low = exact_ohlc.get((ticker, signal_date), (None, None))
+        if day_high is None or day_low is None or pd.isna(day_high) or pd.isna(day_low):
+            day_high, day_low = latest_ohlc.get(ticker, (close_price, close_price))
+        if pd.isna(day_high) or pd.isna(day_low):
+            day_high, day_low = close_price, close_price
+
+        target_price = entry_price * (1 + TAKE_PROFIT_PCT / 100)
+        stop_price = entry_price * (1 + STOP_LOSS_PCT / 100)
+
+        hit_target = day_high >= target_price
+        hit_stop = day_low <= stop_price
 
         current_signal = str(live_row["PrimarySignal"]).upper()
         entry_signal = str(pos["PrimarySignal"]).upper()
 
         exit_reason = None
+        fill_price = close_price
 
-        if return_pct >= TAKE_PROFIT_PCT:
-            exit_reason = "TARGET_HIT"
-        elif return_pct <= STOP_LOSS_PCT:
+        if hit_target and hit_stop:
+            # Daily OHLC can't tell us which level was touched first, so we
+            # assume the worse outcome (stop) rather than overstate results.
             exit_reason = "STOP_HIT"
+            fill_price = stop_price
+        elif hit_stop:
+            exit_reason = "STOP_HIT"
+            fill_price = stop_price
+        elif hit_target:
+            exit_reason = "TARGET_HIT"
+            fill_price = target_price
         elif holding_bars >= MAX_HOLD_BARS:
             exit_reason = "TIME_EXIT"
+            fill_price = close_price
         elif current_signal != entry_signal:
             exit_reason = "SIGNAL_FLIP"
+            fill_price = close_price
 
         if exit_reason:
+            return_pct = round(((fill_price - entry_price) / entry_price) * 100, 2)
+            raw_return_pct = round(((close_price - entry_price) / entry_price) * 100, 2)
+
             exits.append({
                 "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "Ticker": ticker,
@@ -170,9 +259,11 @@ def update_open_positions(open_df: pd.DataFrame, signals_df: pd.DataFrame) -> tu
                 "Volatility": pos["Volatility"],
                 "PriorityScore": pos["PriorityScore"],
                 "EntryPrice": entry_price,
-                "ExitPrice": exit_price,
+                "ExitPrice": fill_price,
                 "HoldingBars": holding_bars,
                 "ReturnPct": return_pct,
+                "RawClose": close_price,
+                "RawReturnPct": raw_return_pct,
                 "WinLoss": "WIN" if return_pct > 0 else "LOSS",
                 "ExitReason": exit_reason,
                 "PatternKey": pos["PatternKey"],
@@ -224,7 +315,10 @@ def main() -> None:
     open_df = ensure_open_positions_file()
     trade_log_df = ensure_trade_log_file()
 
-    open_df, exits = update_open_positions(open_df, signals_df)
+    ohlc_df = load_market_ohlc()
+    exact_ohlc, latest_ohlc = build_ohlc_lookups(ohlc_df)
+
+    open_df, exits = update_open_positions(open_df, signals_df, exact_ohlc, latest_ohlc)
 
     entries_df = choose_entries(signals_df, open_df)
     new_open_df = create_new_positions(entries_df)
