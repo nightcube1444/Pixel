@@ -7,6 +7,7 @@ MARKET_DATA_PATH = Path("data/market_data.csv")
 OPEN_POSITIONS_PATH = Path("data/open_paper_positions.csv")
 TRADE_LOG_PATH = Path("data/paper_trade_log.csv")
 SUMMARY_PATH = Path("data/paper_trade_summary.txt")
+EVENT_VALIDATION_PATH = Path("data/pattern_event_validation_results.csv")
 
 INSTITUTIONAL_PATH = Path(
     "data/institutional_opportunities.csv"
@@ -33,7 +34,9 @@ def load_live_patterns() -> pd.DataFrame:
 
 MIN_APPEARANCES = 500
 MIN_SURVIVAL = 55
-
+MIN_EVENT_COUNT = 30
+MIN_EVENT_WINRATE_10D = 55.0
+MIN_EVENT_AVG_RETURN_10D = 0.0
 ENTRY_SIGNALS = {"PANIC", "MOMENTUM"}
 MIN_SCORE = 55.0
 TAKE_PROFIT_PCT = 2.0
@@ -75,7 +78,42 @@ def ensure_open_positions_file() -> pd.DataFrame:
         ])
     return df
 
+def load_event_validation() -> pd.DataFrame:
+    df = safe_read_csv(EVENT_VALIDATION_PATH)
 
+    if df is None:
+        return pd.DataFrame()
+
+    required = [
+        "Ticker",
+        "Pattern",
+        "Events",
+        "AvgReturn10D",
+        "WinRate10D",
+    ]
+
+    missing = [c for c in required if c not in df.columns]
+
+    if missing:
+        print(f"Event validation missing columns: {missing}")
+        return pd.DataFrame()
+
+    df = df.copy()
+    df["Ticker"] = df["Ticker"].astype(str).str.strip().str.upper()
+    df["Pattern"] = df["Pattern"].astype(str).str.strip()
+    df["Events"] = pd.to_numeric(df["Events"], errors="coerce").fillna(0)
+    df["AvgReturn10D"] = pd.to_numeric(df["AvgReturn10D"], errors="coerce").fillna(0)
+    df["WinRate10D"] = pd.to_numeric(df["WinRate10D"], errors="coerce").fillna(0)
+
+    df = df[
+        (df["Events"] >= MIN_EVENT_COUNT)
+        &
+        (df["WinRate10D"] >= MIN_EVENT_WINRATE_10D)
+        &
+        (df["AvgReturn10D"] > MIN_EVENT_AVG_RETURN_10D)
+    ].copy()
+
+    return df
 def ensure_trade_log_file() -> pd.DataFrame:
     df = safe_read_csv(TRADE_LOG_PATH)
     if df is None:
@@ -292,7 +330,27 @@ def choose_entries(
             approved_df["Pattern"],
         )
     )
-    
+
+    approved_pattern_map = dict(
+        zip(
+            approved_df["Ticker"],
+            approved_df["Pattern"],
+        )
+    )
+
+    event_df = load_event_validation()
+
+    if event_df.empty:
+        print("No ticker-level event validation passed.")
+        return pd.DataFrame()
+
+    event_approved_patterns = set(
+        zip(
+            event_df["Ticker"],
+            event_df["Pattern"],
+        )
+    )
+
     open_tickers = (
         set(open_df["Ticker"].astype(str).str.upper())
         if not open_df.empty
@@ -316,7 +374,12 @@ def choose_entries(
             lambda row: (
                 str(row["Ticker"]).strip().upper(),
                 str(row["Pattern"]).strip(),
-            ) in approved_patterns,
+            ) in approved_patterns
+            and
+            (
+                str(row["Ticker"]).strip().upper(),
+                str(row["Pattern"]).strip(),
+            ) in event_approved_patterns,
             axis=1,
         )
     ].copy()
@@ -326,20 +389,8 @@ def choose_entries(
     ].copy()
 
     if candidates.empty:
-        print("No institutional-grade pattern-matched entries found.")
+        print("No event-validated institutional entries found.")
         return candidates
-    
-    approved_pattern_map = dict(
-
-        zip(
-
-            approved_df["Ticker"],
-
-            approved_df["Pattern"]
-
-        )
-
-    )
 
     candidates["LivePattern"] = candidates["Pattern"]
 
@@ -367,7 +418,7 @@ def choose_entries(
     )
 
     return candidates.head(limit)
-
+    
 def update_open_positions(
     open_df: pd.DataFrame,
     signals_df: pd.DataFrame,

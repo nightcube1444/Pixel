@@ -1,2 +1,1 @@
 Timestamp,Ticker,EntryPrice,PrimarySignal,MarketRegime,Volatility,PriorityScore,HoldingBars,PatternKey,LivePattern,InstitutionalPattern,PatternMatch
-2026-06-21 11:10:44,JPM,325.2200012207031,PANIC,BULL,VOLATILE,58.0,0,JPM|PANIC|BULL|VOLATILE,OVERBOUGHT|BULL|NORMAL|BULL|VIX_ELEVATED,OVERBOUGHT|BULL|NORMAL|BULL|VIX_ELEVATED,True
