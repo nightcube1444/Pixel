@@ -8,6 +8,32 @@ OPEN_POSITIONS_PATH = Path("data/open_paper_positions.csv")
 TRADE_LOG_PATH = Path("data/paper_trade_log.csv")
 SUMMARY_PATH = Path("data/paper_trade_summary.txt")
 
+INSTITUTIONAL_PATH = Path(
+    "data/institutional_opportunities.csv"
+)
+LIVE_PATTERNS_PATH = Path("data/live_pattern_matches.csv")
+def load_live_patterns() -> pd.DataFrame:
+    df = safe_read_csv(LIVE_PATTERNS_PATH)
+
+    if df is None:
+        return pd.DataFrame(columns=["Ticker", "Pattern"])
+
+    required = ["Ticker", "Pattern"]
+    missing = [c for c in required if c not in df.columns]
+
+    if missing:
+        print(f"live_pattern_matches.csv missing columns: {missing}")
+        return pd.DataFrame(columns=["Ticker", "Pattern"])
+
+    df = df.copy()
+    df["Ticker"] = df["Ticker"].astype(str).str.strip().str.upper()
+    df["Pattern"] = df["Pattern"].astype(str).str.strip()
+
+    return df[["Ticker", "Pattern"]]
+
+MIN_APPEARANCES = 500
+MIN_SURVIVAL = 55
+
 ENTRY_SIGNALS = {"PANIC", "MOMENTUM"}
 MIN_SCORE = 55.0
 TAKE_PROFIT_PCT = 2.0
@@ -42,7 +68,10 @@ def ensure_open_positions_file() -> pd.DataFrame:
             "Volatility",
             "PriorityScore",
             "HoldingBars",
-            "PatternKey",
+            "PatternKey", 
+            "LivePattern",
+            "InstitutionalPattern",
+            "PatternMatch",
         ])
     return df
 
@@ -66,6 +95,9 @@ def ensure_trade_log_file() -> pd.DataFrame:
             "WinLoss",
             "ExitReason",
             "PatternKey",
+            "LivePattern",
+            "InstitutionalPattern",
+            "PatternMatch",
         ])
     if "ExitReason" not in df.columns:
         df["ExitReason"] = ""
@@ -103,10 +135,85 @@ def load_latest_signals() -> pd.DataFrame:
     df["FinalScore"] = pd.to_numeric(df["FinalScore"], errors="coerce").fillna(0.0)
 
     df = df.dropna(subset=["Ticker", "Close"]).copy()
-    df["PatternKey"] = df.apply(build_pattern_key, axis=1)
+    live_patterns = load_live_patterns()
+
+    if not live_patterns.empty:
+        df = df.merge(
+            live_patterns,
+            on="Ticker",
+            how="left",
+            suffixes=("", "_Live"),
+        )
+    if "Pattern" not in df.columns:
+
+        df["Pattern"] = ""
+
+    df["Pattern"] = (
+
+        df["Pattern"]
+
+        .fillna("")
+
+        .astype(str)
+
+        .str.strip()
+
+    )
+    df["PatternKey"] = df.apply(
+
+        build_pattern_key,
+
+        axis=1
+
+    )
 
     return df
+def load_institutional_patterns():
 
+    df = safe_read_csv(INSTITUTIONAL_PATH)
+
+    if df is None:
+        return pd.DataFrame()
+
+    required = [
+        "Ticker",
+        "Pattern",
+        "Appearances",
+        "SurvivalScore",
+         
+    ]
+
+    missing = [
+        c for c in required
+        if c not in df.columns
+    ]
+
+    if missing:
+        print(
+            f"Institutional file missing columns: {missing}"
+        )
+        return pd.DataFrame()
+
+    df = df.copy()
+
+    df["Ticker"] = (
+        df["Ticker"]
+        .astype(str)
+        .str.strip()
+        .str.upper()
+    )
+
+    df["Appearances"] = pd.to_numeric(
+        df["Appearances"],
+        errors="coerce",
+    ).fillna(0)
+
+    df["SurvivalScore"] = pd.to_numeric(
+        df["SurvivalScore"],
+        errors="coerce",
+    ).fillna(0)
+
+    return df
 
 def load_market_ohlc() -> pd.DataFrame:
     """Load Ticker/Date/High/Low so exits can detect an intrabar touch of the
@@ -156,18 +263,95 @@ def build_ohlc_lookups(ohlc_df: pd.DataFrame) -> tuple[dict, dict]:
     return exact, latest
 
 
-def choose_entries(signals_df: pd.DataFrame, open_df: pd.DataFrame) -> pd.DataFrame:
-    open_tickers = set(open_df["Ticker"].astype(str).str.upper()) if not open_df.empty else set()
+def choose_entries(
+    signals_df: pd.DataFrame,
+    open_df: pd.DataFrame,
+) -> pd.DataFrame:
+    institutional_df = load_institutional_patterns()
+
+    if institutional_df.empty:
+        print("No institutional opportunities found.")
+        return pd.DataFrame()
+
+    approved_df = institutional_df[
+        (institutional_df["Appearances"] >= MIN_APPEARANCES)
+        &
+        (institutional_df["SurvivalScore"] >= MIN_SURVIVAL)
+    ].copy()
+
+    if approved_df.empty:
+        print("No institutional patterns passed the quality gate.")
+        return pd.DataFrame()
+
+    approved_df["Ticker"] = approved_df["Ticker"].astype(str).str.strip().str.upper()
+    approved_df["Pattern"] = approved_df["Pattern"].astype(str).str.strip()
+
+    approved_patterns = set(
+        zip(
+            approved_df["Ticker"],
+            approved_df["Pattern"],
+        )
+    )
+    
+    open_tickers = (
+        set(open_df["Ticker"].astype(str).str.upper())
+        if not open_df.empty
+        else set()
+    )
 
     candidates = signals_df[
-        (signals_df["PrimarySignal"].isin(ENTRY_SIGNALS)) &
+        (signals_df["PrimarySignal"].isin(ENTRY_SIGNALS))
+        &
         (signals_df["FinalScore"] >= MIN_SCORE)
     ].copy()
 
-    candidates = candidates[~candidates["Ticker"].isin(open_tickers)].copy()
+    if candidates.empty:
+        print("No score-qualified entries found.")
+        return candidates
+
+    candidates["Pattern"] = candidates["Pattern"].astype(str).str.strip()
+
+    candidates = candidates[
+        candidates.apply(
+            lambda row: (
+                str(row["Ticker"]).strip().upper(),
+                str(row["Pattern"]).strip(),
+            ) in approved_patterns,
+            axis=1,
+        )
+    ].copy()
+
+    candidates = candidates[
+        ~candidates["Ticker"].isin(open_tickers)
+    ].copy()
 
     if candidates.empty:
+        print("No institutional-grade pattern-matched entries found.")
         return candidates
+    
+    approved_pattern_map = dict(
+
+        zip(
+
+            approved_df["Ticker"],
+
+            approved_df["Pattern"]
+
+        )
+
+    )
+
+    candidates["LivePattern"] = candidates["Pattern"]
+
+    candidates["InstitutionalPattern"] = (
+        candidates["Ticker"].map(approved_pattern_map)
+    )
+
+    candidates["PatternMatch"] = (
+        candidates["LivePattern"].astype(str).str.strip()
+        ==
+        candidates["InstitutionalPattern"].astype(str).str.strip()
+    )
 
     remaining_slots = max(0, MAX_OPEN_POSITIONS - len(open_df))
     limit = min(MAX_NEW_TRADES_PER_RUN, remaining_slots)
@@ -176,13 +360,13 @@ def choose_entries(signals_df: pd.DataFrame, open_df: pd.DataFrame) -> pd.DataFr
         return candidates.iloc[0:0].copy()
 
     candidates["PriorityScore"] = candidates["FinalScore"]
+
     candidates = candidates.sort_values(
         by=["FinalScore", "Ticker"],
-        ascending=[False, True]
+        ascending=[False, True],
     )
 
     return candidates.head(limit)
-
 
 def update_open_positions(
     open_df: pd.DataFrame,
@@ -267,6 +451,12 @@ def update_open_positions(
                 "WinLoss": "WIN" if return_pct > 0 else "LOSS",
                 "ExitReason": exit_reason,
                 "PatternKey": pos["PatternKey"],
+                "LivePattern": pos.get("LivePattern", ""),
+                "InstitutionalPattern": pos.get(
+                    "InstitutionalPattern",
+                    ""
+                ),
+                "PatternMatch": pos.get("PatternMatch", False),
             })
         else:
             updated = pos.to_dict()
@@ -285,6 +475,9 @@ def update_open_positions(
             "PriorityScore",
             "HoldingBars",
             "PatternKey",
+            "LivePattern",
+            "InstitutionalPattern",
+            "PatternMatch",
         ],
     )
 
@@ -305,6 +498,9 @@ def create_new_positions(entries_df: pd.DataFrame) -> pd.DataFrame:
             "PriorityScore": round(float(row["FinalScore"]), 2),
             "HoldingBars": 0,
             "PatternKey": row["PatternKey"],
+            "LivePattern": row.get("LivePattern", ""),
+            "InstitutionalPattern": row.get("InstitutionalPattern", ""),
+            "PatternMatch": row.get("PatternMatch", False),
         })
 
     return pd.DataFrame(rows)
