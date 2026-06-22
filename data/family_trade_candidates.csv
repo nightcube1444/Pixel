@@ -1,0 +1,2 @@
+Ticker,PrimarySignal,FinalScore,Pattern,PatternFamily,FamilyScore,FamilyStrength,Members,TotalEvents,AvgWinRate,AvgReturn10D,CombinedScore
+QQQ,MOMENTUM,48.0,MOMENTUM|BULL|VOLATILE|BULL|VIX_ELEVATED,MOMENTUM|BULL|VOLATILE,58.46,STRONG,3.0,187.0,56.35333333333333,0.3966666666666666,53.75

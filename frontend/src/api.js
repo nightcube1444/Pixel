@@ -46,4 +46,15 @@ export const getSystemHealth = async () => {
   const res = await axios.get(`${OLD_API}/system-health`);
   return res.data;
 };
- 
+export const getPaperPositions = async () => {
+  const res = await axios.get(`${OLD_API}/paper-positions`);
+  return res.data;
+};
+export const getStrategyValidation = async () => {
+  const res = await axios.get(`${OLD_API}/strategy-validation`);
+  return res.data;
+};
+export const getOpportunityDiagnostics = async () => {
+  const res = await axios.get(`${OLD_API}/opportunity-diagnostics`);
+  return res.data;
+};

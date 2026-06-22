@@ -1,54 +1,103 @@
+ from pathlib import Path
 import pandas as pd
 
-# Load forward validation results
-df = pd.read_csv("data/forward_validation_results.csv")
+INPUT_FILE = Path("data/forward_validation_results.csv")
+OUTPUT_FILE = Path("data/walk_forward_results.csv")
 
-# Parse dates
-df["SignalDate"] = pd.to_datetime(df["SignalDate"], format="mixed", errors="coerce")
-df = df.dropna(subset=["SignalDate"])
+MIN_TRADES = 30
 
-if df.empty:
-    print("No forward validation data available.")
-    exit()
 
-# Sort by date
-df = df.sort_values("SignalDate").reset_index(drop=True)
-
-# Split into train and test halves
-split_idx = int(len(df) * 0.7)
-
-train_df = df.iloc[:split_idx].copy()
-test_df = df.iloc[split_idx:].copy()
-
-def summarize_by_signal(dataframe, label):
+def summarize(dataframe, label, train_end_year=None, test_year=None):
     if dataframe.empty:
         return pd.DataFrame()
 
     summary = dataframe.groupby("Signal").agg(
         Trades=("Ticker", "count"),
         WinRate=("Win1D", "mean"),
-        AvgReturn=("Return1D", "mean")
+        AvgReturn=("Return1D", "mean"),
     ).reset_index()
 
     summary["WinRate"] = summary["WinRate"] * 100
     summary["AvgReturn"] = summary["AvgReturn"] * 100
     summary["Period"] = label
+    summary["TrainEndYear"] = train_end_year
+    summary["TestYear"] = test_year
 
-    summary = summary.round({
+    summary["Status"] = summary.apply(
+        lambda row: "VALID"
+        if row["Trades"] >= MIN_TRADES and row["WinRate"] >= 55 and row["AvgReturn"] > 0
+        else "WEAK",
+        axis=1,
+    )
+
+    return summary.round({
         "WinRate": 2,
-        "AvgReturn": 3
+        "AvgReturn": 3,
     })
 
-    return summary
 
-train_summary = summarize_by_signal(train_df, "TRAIN")
-test_summary = summarize_by_signal(test_df, "TEST")
+def main():
+    df = pd.read_csv(INPUT_FILE)
 
-results = pd.concat([train_summary, test_summary], ignore_index=True)
+    df["SignalDate"] = pd.to_datetime(
+        df["SignalDate"],
+        format="mixed",
+        errors="coerce",
+    )
 
-print("\nWALK-FORWARD TEST RESULTS\n")
-print(results)
+    df = df.dropna(subset=["SignalDate"]).copy()
 
-results.to_csv("data/walk_forward_results.csv", index=False)
+    if df.empty:
+        print("No forward validation data available.")
+        return
 
-print("\nSaved to data/walk_forward_results.csv")
+    df["Year"] = df["SignalDate"].dt.year
+
+    years = sorted(df["Year"].unique())
+
+    all_results = []
+
+    for test_year in years[3:]:
+        train_df = df[df["Year"] < test_year].copy()
+        test_df = df[df["Year"] == test_year].copy()
+
+        if train_df.empty or test_df.empty:
+            continue
+
+        train_summary = summarize(
+            train_df,
+            "TRAIN",
+            train_end_year=test_year - 1,
+            test_year=test_year,
+        )
+
+        test_summary = summarize(
+            test_df,
+            "TEST",
+            train_end_year=test_year - 1,
+            test_year=test_year,
+        )
+
+        combined = pd.concat(
+            [train_summary, test_summary],
+            ignore_index=True,
+        )
+
+        all_results.append(combined)
+
+    if not all_results:
+        print("No walk-forward results generated.")
+        return
+
+    results = pd.concat(all_results, ignore_index=True)
+
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    results.to_csv(OUTPUT_FILE, index=False)
+
+    print("\nWALK-FORWARD TEST RESULTS\n")
+    print(results.head(50).to_string(index=False))
+    print(f"\nSaved to {OUTPUT_FILE}")
+
+
+if __name__ == "__main__":
+    main()

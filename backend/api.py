@@ -293,4 +293,13 @@ def live_ticker(ticker: str):
         "pattern": pattern,
         "explanation": explain_pattern(pattern) if pattern else []
     }
+@app.get("/paper-positions")
+def paper_positions():
+    return read_csv("open_paper_positions.csv")
 
+@app.get("/strategy-validation")
+def strategy_validation():
+    return read_csv("pattern_event_validation_results.csv")
+@app.get("/opportunity-diagnostics")
+def opportunity_diagnostics():
+    return read_csv("opportunity_diagnostic_details.csv")

@@ -1,19 +1,17 @@
 File,Column,NaNCount,NaNPct,Status
-all_stock_signals.csv,PatternKey,208099,100.0,HIGH_NAN
-all_stock_signals.csv,RSI_Oversold,196196,94.28,HIGH_NAN
-all_stock_signals.csv,RSI_Overbought,186828,89.78,HIGH_NAN
-all_stock_signals.csv,Panic,158991,76.4,HIGH_NAN
-all_stock_signals.csv,Momentum,155880,74.91,HIGH_NAN
-all_stock_signals.csv,MA200,11144,5.36,LOW_NAN
+all_stock_signals.csv,PatternKey,208130,100.0,HIGH_NAN
+all_stock_signals.csv,RSI_Oversold,196224,94.28,HIGH_NAN
+all_stock_signals.csv,RSI_Overbought,186856,89.78,HIGH_NAN
+all_stock_signals.csv,Panic,159017,76.4,HIGH_NAN
+all_stock_signals.csv,Momentum,155900,74.91,HIGH_NAN
+all_stock_signals.csv,MA200,11144,5.35,LOW_NAN
 all_stock_signals.csv,MA50,2744,1.32,LOW_NAN
 all_stock_signals.csv,RollingVol20,1120,0.54,LOW_NAN
 all_stock_signals.csv,RSI,728,0.35,LOW_NAN
 all_stock_signals.csv,Daily Return,56,0.03,LOW_NAN
 latest_stock_signals.csv,PatternKey,56,100.0,HIGH_NAN
-latest_stock_signals.csv,RSI_Oversold,54,96.43,HIGH_NAN
 latest_stock_signals.csv,RSI_Overbought,52,92.86,HIGH_NAN
-latest_stock_signals.csv,Momentum,45,80.36,HIGH_NAN
-latest_stock_signals.csv,Panic,36,64.29,HIGH_NAN
-market_data.csv,Close,1,0.0,LOW_NAN
-market_data.csv,Adj Close,1,0.0,LOW_NAN
+latest_stock_signals.csv,RSI_Oversold,52,92.86,HIGH_NAN
+latest_stock_signals.csv,Panic,42,75.0,HIGH_NAN
+latest_stock_signals.csv,Momentum,41,73.21,HIGH_NAN
 market_state.csv,PrevMarketState,1,0.02,LOW_NAN

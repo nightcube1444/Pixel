@@ -2,11 +2,6 @@ MINI CUBE ALERT ENGINE
 
 IMPORTANT
 ---------
-[MARKET_STATE] FearScore
-Type: FEAR_CHANGE
-Score: 78
-Why: Market state changed: 0.00 -> 11.00
-
 [ALPHA] MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME
 Type: SCORE_JUMP
 Score: 72
@@ -37,9 +32,8 @@ Score: 72
 Stocks: BSE, BTC-USD, CDSL, COCHINSHIP, ETH-USD
 Why: Pattern score jumped meaningfully.
 
-INFO
-----
-[MARKET_STATE] PositiveScore
-Type: POSITIVE_CHANGE
-Score: 45
-Why: Market state changed: 0.00 -> 6.00
+[ALPHA] OVERBOUGHT|HIGH_VOLATILITY|NORMAL|BULL|VIX_HIGH
+Type: SCORE_JUMP
+Score: 72
+Stocks: AAPL, AMD, BAC, BEL, BSE
+Why: Pattern score jumped meaningfully.

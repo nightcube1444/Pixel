@@ -12,26 +12,27 @@ INSTITUTIONAL_FILE = Path(
 OUTPUT_FILE = Path(
     "data/institutional_opportunities.csv"
 )
+DIVERSITY_PATH = Path("data/pattern_ticker_diversity.csv")
+def load_diversity():
+    if not DIVERSITY_PATH.exists():
+        return pd.DataFrame()
 
+    df = pd.read_csv(DIVERSITY_PATH)
+    df["Pattern"] = df["Pattern"].astype(str).str.strip()
+    return df
 
 def main():
 
     print("\nINSTITUTIONAL OPPORTUNITY ENGINE\n")
 
-    live_df = pd.read_csv(
-        LIVE_FILE
-    )
+    live_df = pd.read_csv(LIVE_FILE)
 
-    inst_df = pd.read_csv(
-        INSTITUTIONAL_FILE
-    )
+    inst_df = pd.read_csv(INSTITUTIONAL_FILE)
 
     pattern_counts = (
         live_df.groupby("Pattern")
         .size()
-        .reset_index(
-            name="CurrentTickerCount"
-        )
+        .reset_index(name="CurrentTickerCount")
     )
 
     opportunities = (
@@ -47,6 +48,11 @@ def main():
         )
     )
 
+    # -----------------------------
+    # Merge ticker diversity data
+    # -----------------------------
+     
+
     opportunities = opportunities[
         [
             "Ticker",
@@ -56,7 +62,10 @@ def main():
             "AvgReturn10D",
             "SurvivalScore",
             "AlphaScore",
-            "CurrentTickerCount"
+            "CurrentTickerCount",
+            "DistinctTickers",
+            "TopTickerSharePct",
+            "DiversityStatus",
         ]
     ]
 
@@ -69,6 +78,11 @@ def main():
             True,
             False
         ]
+    )
+
+    OUTPUT_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True
     )
 
     opportunities.to_csv(
@@ -90,7 +104,5 @@ def main():
     print(
         f"Saved to {OUTPUT_FILE}"
     )
-
-
 if __name__ == "__main__":
     main()

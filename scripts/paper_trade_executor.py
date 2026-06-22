@@ -8,11 +8,15 @@ OPEN_POSITIONS_PATH = Path("data/open_paper_positions.csv")
 TRADE_LOG_PATH = Path("data/paper_trade_log.csv")
 SUMMARY_PATH = Path("data/paper_trade_summary.txt")
 EVENT_VALIDATION_PATH = Path("data/pattern_event_validation_results.csv")
+LIQUIDITY_PATH = Path("data/liquidity_report.csv")
 
 INSTITUTIONAL_PATH = Path(
     "data/institutional_opportunities.csv"
 )
 LIVE_PATTERNS_PATH = Path("data/live_pattern_matches.csv")
+FINAL_CANDIDATES_PATH = Path(
+    "data/final_trade_candidates.csv"
+)
 def load_live_patterns() -> pd.DataFrame:
     df = safe_read_csv(LIVE_PATTERNS_PATH)
 
@@ -32,6 +36,46 @@ def load_live_patterns() -> pd.DataFrame:
 
     return df[["Ticker", "Pattern"]]
 
+def load_final_candidates():
+
+    df = safe_read_csv(
+        FINAL_CANDIDATES_PATH
+    )
+
+    if df is None:
+        return set()
+
+    return set(
+        df["Ticker"]
+        .astype(str)
+        .str.upper()
+    )
+
+def load_liquidity() -> pd.DataFrame:
+    df = safe_read_csv(LIQUIDITY_PATH)
+
+    if df is None:
+        return pd.DataFrame()
+
+    required = [
+        "Ticker",
+        "LiquidityStatus",
+    ]
+
+    missing = [c for c in required if c not in df.columns]
+
+    if missing:
+        print(f"Liquidity report missing columns: {missing}")
+        return pd.DataFrame()
+
+    df = df.copy()
+    df["Ticker"] = df["Ticker"].astype(str).str.strip().str.upper()
+    df["LiquidityStatus"] = df["LiquidityStatus"].astype(str).str.strip().str.upper()
+
+    df = df[df["LiquidityStatus"] == "LIQUID"].copy()
+
+    return df
+
 MIN_APPEARANCES = 500
 MIN_SURVIVAL = 55
 MIN_EVENT_COUNT = 30
@@ -43,7 +87,7 @@ TAKE_PROFIT_PCT = 2.0
 STOP_LOSS_PCT = -2.0
 MAX_HOLD_BARS = 3
 MAX_OPEN_POSITIONS = 5
-MAX_NEW_TRADES_PER_RUN = 2
+MAX_NEW_TRADES_PER_RUN = 3
 
 
 def safe_read_csv(path: Path) -> pd.DataFrame | None:
@@ -305,6 +349,7 @@ def choose_entries(
     signals_df: pd.DataFrame,
     open_df: pd.DataFrame,
 ) -> pd.DataFrame:
+
     institutional_df = load_institutional_patterns()
 
     if institutional_df.empty:
@@ -321,8 +366,18 @@ def choose_entries(
         print("No institutional patterns passed the quality gate.")
         return pd.DataFrame()
 
-    approved_df["Ticker"] = approved_df["Ticker"].astype(str).str.strip().str.upper()
-    approved_df["Pattern"] = approved_df["Pattern"].astype(str).str.strip()
+    approved_df["Ticker"] = (
+        approved_df["Ticker"]
+        .astype(str)
+        .str.strip()
+        .str.upper()
+    )
+
+    approved_df["Pattern"] = (
+        approved_df["Pattern"]
+        .astype(str)
+        .str.strip()
+    )
 
     approved_patterns = set(
         zip(
@@ -351,8 +406,24 @@ def choose_entries(
         )
     )
 
+    liquidity_df = load_liquidity()
+
+    if liquidity_df.empty:
+        print("No liquid tickers found.")
+        return pd.DataFrame()
+
+    liquid_tickers = set(
+        liquidity_df["Ticker"]
+        .astype(str)
+        .str.upper()
+    )
+
     open_tickers = (
-        set(open_df["Ticker"].astype(str).str.upper())
+        set(
+            open_df["Ticker"]
+            .astype(str)
+            .str.upper()
+        )
         if not open_df.empty
         else set()
     )
@@ -367,11 +438,16 @@ def choose_entries(
         print("No score-qualified entries found.")
         return candidates
 
-    candidates["Pattern"] = candidates["Pattern"].astype(str).str.strip()
+    candidates["Pattern"] = (
+        candidates["Pattern"]
+        .astype(str)
+        .str.strip()
+    )
 
     candidates = candidates[
         candidates.apply(
-            lambda row: (
+            lambda row:
+            (
                 str(row["Ticker"]).strip().upper(),
                 str(row["Pattern"]).strip(),
             ) in approved_patterns
@@ -379,42 +455,98 @@ def choose_entries(
             (
                 str(row["Ticker"]).strip().upper(),
                 str(row["Pattern"]).strip(),
-            ) in event_approved_patterns,
+            ) in event_approved_patterns
+            and
+            str(row["Ticker"]).strip().upper()
+            in liquid_tickers,
             axis=1,
         )
     ].copy()
 
     candidates = candidates[
-        ~candidates["Ticker"].isin(open_tickers)
+        ~candidates["Ticker"].isin(
+            open_tickers
+        )
     ].copy()
 
     if candidates.empty:
-        print("No event-validated institutional entries found.")
+        print(
+            "No event-validated liquid institutional entries found."
+        )
         return candidates
 
-    candidates["LivePattern"] = candidates["Pattern"]
+    candidates["LivePattern"] = (
+        candidates["Pattern"]
+    )
 
     candidates["InstitutionalPattern"] = (
-        candidates["Ticker"].map(approved_pattern_map)
+        candidates["Ticker"]
+        .map(approved_pattern_map)
     )
 
     candidates["PatternMatch"] = (
-        candidates["LivePattern"].astype(str).str.strip()
+        candidates["LivePattern"]
+        .astype(str)
+        .str.strip()
         ==
-        candidates["InstitutionalPattern"].astype(str).str.strip()
+        candidates["InstitutionalPattern"]
+        .astype(str)
+        .str.strip()
     )
 
-    remaining_slots = max(0, MAX_OPEN_POSITIONS - len(open_df))
-    limit = min(MAX_NEW_TRADES_PER_RUN, remaining_slots)
+    remaining_slots = max(
+        0,
+        MAX_OPEN_POSITIONS - len(open_df)
+    )
+
+    limit = min(
+        MAX_NEW_TRADES_PER_RUN,
+        remaining_slots
+    )
 
     if limit <= 0:
         return candidates.iloc[0:0].copy()
 
-    candidates["PriorityScore"] = candidates["FinalScore"]
+    candidates["PriorityScore"] = (
+        candidates["FinalScore"]
+    )
 
     candidates = candidates.sort_values(
-        by=["FinalScore", "Ticker"],
-        ascending=[False, True],
+        by=[
+            "FinalScore",
+            "Ticker",
+        ],
+        ascending=[
+            False,
+            True,
+        ],
+    )
+
+    # FINAL CANDIDATE FILTER
+
+    final_candidates = load_final_candidates()
+
+    if not final_candidates:
+        print(
+            "No final candidates available."
+        )
+        return pd.DataFrame()
+
+    candidates = candidates[
+        candidates["Ticker"].isin(
+            final_candidates
+        )
+    ].copy()
+
+    if candidates.empty:
+        print(
+            "No final-candidate entries survived."
+        )
+        return candidates
+
+    print(
+        f"Final Candidates Survived: "
+        f"{len(candidates)}"
     )
 
     return candidates.head(limit)

@@ -2,7 +2,7 @@
 MINI CUBE DAILY REPORT
 ==================================================
 
-Generated: 2026-06-20 11:43:27
+Generated: 2026-06-22 10:38:55
 
 MARKET STATE
 ------------------------------
@@ -13,15 +13,15 @@ VIX State: VIX_ELEVATED
 TOP SIGNALS
 ------------------------------
 GDX | PANIC | HIGH_VOLATILITY | Score=65.0
-IRDM | PANIC | HIGH_VOLATILITY | Score=65.0
 ^VIX | PANIC | HIGH_VOLATILITY | Score=65.0
+IRDM | PANIC | HIGH_VOLATILITY | Score=65.0
 SLV | PANIC | HIGH_VOLATILITY | Score=65.0
 PERSISTENT | PANIC | BEAR | Score=60.0
 LMT | PANIC | BEAR | Score=60.0
-TCS | PANIC | BEAR | Score=60.0
-INFY | PANIC | BEAR | Score=60.0
 NOC | PANIC | BEAR | Score=60.0
-RVNL | PANIC | BEAR | Score=60.0
+TCS | PANIC | BEAR | Score=60.0
+MCD | PANIC | BEAR | Score=60.0
+INFY | PANIC | BEAR | Score=60.0
 
 LIVE PATTERN MATCHES
 ------------------------------
@@ -59,9 +59,7 @@ GS | 16.04%
 
 OPEN PAPER TRADES
 ------------------------------
-NFLX | PANIC | Entry=80.34
-GDX | PANIC | Entry=82.51
-IRDM | PANIC | Entry=44.57
+No open trades.
 
 CLOSED TRADES
 ------------------------------
@@ -70,5 +68,8 @@ RKLB | 2.0% | TARGET_HIT
 ^VIX | -2.0% | STOP_HIT
 ETH-USD | 1.58% | SIGNAL_FLIP
 GDX | 2.0% | TARGET_HIT
+GDX | 2.0% | TARGET_HIT
+IRDM | -2.0% | STOP_HIT
+JPM | 2.0% | TARGET_HIT
 
 ==================================================
