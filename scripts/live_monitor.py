@@ -19,6 +19,23 @@ SUMMARY_PATH = BASE_DIR / "data/live_monitor_summary.txt"
 STATE_PATH = BASE_DIR / "data/live_monitor_state.csv"
 STATE_LOG_PATH = BASE_DIR / "data/mini_cube_state_log.csv"
 
+MARKET_STATE_PATH = Path("data/market_state.csv")
+
+
+def get_market_state_truth() -> str:
+    if not MARKET_STATE_PATH.exists():
+        return "UNKNOWN"
+
+    df = pd.read_csv(MARKET_STATE_PATH)
+
+    if df.empty:
+        return "UNKNOWN"
+
+    for col in ["MarketState", "Market State", "State"]:
+        if col in df.columns:
+            return str(df.iloc[-1][col]).strip().upper()
+
+    return "UNKNOWN"
 
 # =========================
 # Helpers
@@ -462,7 +479,7 @@ def main() -> None:
         print("No usable signal file found.")
         return
 
-    market_state = get_market_state(df)
+    market_state = get_market_state_truth()
     top_signal = pick_top_signal(df)
 
     bull = extract_regime_list(df, "BULL")

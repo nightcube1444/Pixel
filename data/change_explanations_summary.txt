@@ -1,7 +1,7 @@
 MINI CUBE CHANGE EXPLANATION SUMMARY
-Time: 2026-06-22 12:22:32
+Time: 2026-06-23 11:55:03
 
-Total explained changes: 18
+Total explained changes: 17
 
 IMPORTANT:
 - ALPHA | MOMENTUM|BULL|VOLATILE|BULL|VIX_EXTREME | SCORE_JUMP
@@ -16,13 +16,7 @@ IMPORTANT:
 - ALPHA | MOMENTUM|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW | SCORE_JUMP
   Reason: A pattern improved in rank or alpha score.
   Action: Check whether the improvement is supported by enough trades and stable memory.
-- ALPHA | MOMENTUM|INSUFFICIENT_HISTORY|VOLATILE|BULL|VIX_LOW | SCORE_JUMP
-  Reason: A pattern improved in rank or alpha score.
-  Action: Check whether the improvement is supported by enough trades and stable memory.
 - ALPHA | OVERBOUGHT|HIGH_VOLATILITY|NORMAL|BULL|VIX_HIGH | SCORE_JUMP
-  Reason: A pattern improved in rank or alpha score.
-  Action: Check whether the improvement is supported by enough trades and stable memory.
-- ALPHA | OVERBOUGHT|SIDEWAYS|NORMAL|SPY_INSUFFICIENT_HISTORY|VIX_UNAVAILABLE | SCORE_JUMP
   Reason: A pattern improved in rank or alpha score.
   Action: Check whether the improvement is supported by enough trades and stable memory.
 - ALPHA | OVERSOLD|HIGH_VOLATILITY|NORMAL|HIGH_VOL|VIX_EXTREME | SCORE_JUMP
@@ -34,3 +28,14 @@ IMPORTANT:
 - ALPHA | PANIC|BEAR|VOLATILE|BEAR|VIX_EXTREME | SCORE_JUMP
   Reason: A pattern improved in rank or alpha score.
   Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | PANIC|BULL|VOLATILE|BULL|VIX_HIGH | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+- ALPHA | PANIC|HIGH_VOLATILITY|VOLATILE|BULL|VIX_LOW | SCORE_JUMP
+  Reason: A pattern improved in rank or alpha score.
+  Action: Check whether the improvement is supported by enough trades and stable memory.
+
+INFO:
+- MARKET_STATE | PositiveScore | POSITIVE_CHANGE
+  Reason: Positive news score changed from 2.00 to 4.00.
+  Action: Check whether positive news is confirmed by market price action.

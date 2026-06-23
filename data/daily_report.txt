@@ -2,7 +2,7 @@
 MINI CUBE DAILY REPORT
 ==================================================
 
-Generated: 2026-06-22 10:38:55
+Generated: 2026-06-23 11:55:12
 
 MARKET STATE
 ------------------------------
@@ -12,16 +12,16 @@ VIX State: VIX_ELEVATED
 
 TOP SIGNALS
 ------------------------------
-GDX | PANIC | HIGH_VOLATILITY | Score=65.0
-^VIX | PANIC | HIGH_VOLATILITY | Score=65.0
 IRDM | PANIC | HIGH_VOLATILITY | Score=65.0
-SLV | PANIC | HIGH_VOLATILITY | Score=65.0
-PERSISTENT | PANIC | BEAR | Score=60.0
-LMT | PANIC | BEAR | Score=60.0
+RKLB | PANIC | HIGH_VOLATILITY | Score=65.0
+GDX | PANIC | HIGH_VOLATILITY | Score=65.0
+ETH-USD | PANIC | HIGH_VOLATILITY | Score=65.0
 NOC | PANIC | BEAR | Score=60.0
-TCS | PANIC | BEAR | Score=60.0
-MCD | PANIC | BEAR | Score=60.0
 INFY | PANIC | BEAR | Score=60.0
+RVNL | PANIC | BEAR | Score=60.0
+MSFT | PANIC | BEAR | Score=60.0
+MCD | PANIC | BEAR | Score=60.0
+MA | PANIC | BEAR | Score=60.0
 
 LIVE PATTERN MATCHES
 ------------------------------
